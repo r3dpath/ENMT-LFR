@@ -34,9 +34,9 @@
         "other_text_thickness": 0.15,
         "other_text_upright": false,
         "pads": {
-          "drill": 0.0,
-          "height": 1.4,
-          "width": 1.025
+          "drill": 0.762,
+          "height": 1.524,
+          "width": 1.524
         },
         "silk_line_width": 0.15,
         "silk_text_italic": false,
@@ -48,13 +48,7 @@
           "min_clearance": 0.5
         }
       },
-      "diff_pair_dimensions": [
-        {
-          "gap": 0.0,
-          "via_gap": 0.0,
-          "width": 0.0
-        }
-      ],
+      "diff_pair_dimensions": [],
       "drc_exclusions": [],
       "meta": {
         "version": 2
@@ -171,19 +165,8 @@
           "td_width_to_size_filter_ratio": 0.9
         }
       ],
-      "track_widths": [
-        0.0,
-        0.0,
-        0.2,
-        0.3,
-        0.5
-      ],
-      "via_dimensions": [
-        {
-          "diameter": 0.0,
-          "drill": 0.0
-        }
-      ],
+      "track_widths": [],
+      "via_dimensions": [],
       "zones_allow_external_fillets": false
     },
     "layer_presets": [],
@@ -409,7 +392,7 @@
     "pinned_symbol_libs": []
   },
   "meta": {
-    "filename": "SensorBoard.kicad_pro",
+    "filename": "SensorBoard2.kicad_pro",
     "version": 1
   },
   "net_settings": {
@@ -486,7 +469,7 @@
   },
   "sheets": [
     [
-      "38c2a02d-b049-490a-a2ac-0373717116e2",
+      "bfa46803-dfa7-4864-9054-2e8f8a252470",
       ""
     ]
   ],
