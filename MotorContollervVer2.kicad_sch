@@ -751,7 +751,7 @@
     (pin "1" (uuid 755f8162-96ee-497d-be7e-9f3e3d682ac9))
     (pin "2" (uuid 8750ab91-c46f-44a8-8233-25f35a637db1))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "D1") (unit 1)
         )
@@ -777,7 +777,7 @@
     (pin "1" (uuid d4158b43-c6e5-43b5-b99b-25e138f50a64))
     (pin "2" (uuid 6bd1daed-0c89-48ba-9b73-2596113753b5))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "R4") (unit 1)
         )
@@ -804,7 +804,7 @@
     (pin "2" (uuid 00132986-0465-4671-a2ab-5e10ddcfdd8f))
     (pin "3" (uuid 1bdfc74e-3731-4800-be4f-7b417815e396))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "Q1") (unit 1)
         )
@@ -830,7 +830,7 @@
     (pin "1" (uuid ed4dcf19-4eeb-4898-b8f5-bef88cd89a22))
     (pin "2" (uuid a84c2ad0-6738-40af-8e68-3f68775bd3bb))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "R1") (unit 1)
         )
@@ -886,7 +886,7 @@
     (pin "8" (uuid 1432b9c3-c88b-4656-a4f7-5def154ad789))
     (pin "9" (uuid 0b4dd326-a27f-4167-94d5-3cf9350b0e62))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "U1") (unit 1)
         )
@@ -911,7 +911,7 @@
     )
     (pin "1" (uuid f250a1a7-27bc-4ba1-a72d-d08ea4255cb1))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "#PWR01") (unit 1)
         )
@@ -937,7 +937,7 @@
     (pin "1" (uuid 82442c85-0e97-4adc-b6ab-088ddc0a8757))
     (pin "2" (uuid ad4744d9-39e4-42f2-9289-df34f92314f3))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "R3") (unit 1)
         )
@@ -963,7 +963,7 @@
     (pin "1" (uuid 839b9010-2f39-4a22-85e6-556b97279e6a))
     (pin "2" (uuid e790d9d7-95b6-4b3a-b388-641c20b90edb))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "C1") (unit 1)
         )
@@ -989,7 +989,7 @@
     (pin "1" (uuid 0ac38e74-c0aa-4f75-9996-a5aa8ab4723a))
     (pin "2" (uuid f2a47ff7-ef49-4b0c-9ebe-eecda07f08f6))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "D2") (unit 1)
         )
@@ -1015,7 +1015,7 @@
     (pin "1" (uuid f294770e-f3b9-44d6-9ee1-911f2f071249))
     (pin "2" (uuid adda4730-0855-4b37-a326-f0b0b74ae821))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "R2") (unit 1)
         )
@@ -1042,7 +1042,7 @@
     (pin "2" (uuid 94321e5e-f1c1-481d-bab2-84fd5aa8fe2e))
     (pin "3" (uuid e4edfd46-1122-4308-8fb9-74c65c3e0463))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "Q2") (unit 1)
         )
@@ -1068,7 +1068,7 @@
     (pin "1" (uuid d9695b06-314f-4b51-9f9e-46920a72e083))
     (pin "2" (uuid 64bca76c-813d-4530-96d4-d66d2b4ef7a4))
     (instances
-      (project "MotorContoller"
+      (project "MotorContollervVer2"
         (path "/176093ac-2e74-4a63-93ef-127a7831efc2"
           (reference "C4") (unit 1)
         )
