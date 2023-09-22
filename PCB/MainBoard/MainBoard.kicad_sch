@@ -4,6 +4,12 @@
 
   (paper "A4")
 
+  (title_block
+    (title "Ankle Breaker MCU")
+    (date "2023-09-22")
+    (company "Group 28")
+  )
+
   (lib_symbols
     (symbol "Connector:Conn_01x02_Pin" (pin_names (offset 1.016) hide) (in_bom yes) (on_board yes)
       (property "Reference" "J" (at 0 2.54 0)
@@ -2379,7 +2385,7 @@
     (effects (font (size 3 3)) (justify left bottom))
     (uuid 21333dbf-14fa-42c4-89f1-1a3564c915c4)
   )
-  (text "Power" (at 68.58 60.96 0)
+  (text "Power" (at 33.02 62.23 0)
     (effects (font (size 3 3)) (justify left bottom))
     (uuid 486cd67e-d265-4baa-9c5f-5c289bfdf2c4)
   )
@@ -2387,7 +2393,7 @@
     (effects (font (size 2 2)) (justify left bottom))
     (uuid 60b43e44-e6dc-4b44-b462-e828b60e5c7e)
   )
-  (text "uC" (at 250.19 92.71 0)
+  (text "uC" (at 163.83 97.79 0)
     (effects (font (size 3 3)) (justify left bottom))
     (uuid 67494fc8-9707-4805-923e-fede1898e2f9)
   )
@@ -2395,11 +2401,11 @@
     (effects (font (size 2 2)) (justify left bottom))
     (uuid aa9d11e7-7a71-4670-a0f5-9834a1517533)
   )
-  (text "Motor Drivers" (at 83.82 71.12 0)
+  (text "Motor Drivers" (at 33.02 68.58 0)
     (effects (font (size 3 3)) (justify left bottom))
     (uuid c2f6036d-7e1d-483e-9c18-f30d9df1e974)
   )
-  (text "Connectors" (at 77.47 146.05 0)
+  (text "Connectors" (at 33.02 140.97 0)
     (effects (font (size 3 3)) (justify left bottom))
     (uuid f8c5105e-2c0e-4489-9a55-edb5a6d9cbc6)
   )
