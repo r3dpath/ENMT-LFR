@@ -458,8 +458,8 @@
       "idf": "",
       "netlist": "",
       "specctra_dsn": "",
-      "step": "MainBoard.step",
-      "vrml": ""
+      "step": "../../CAD/PCB's/MainBoard.step",
+      "vrml": "../../CAD/PCB's/MainBoard.wrl"
     },
     "page_layout_descr_file": ""
   },
