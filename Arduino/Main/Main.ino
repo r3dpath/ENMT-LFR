@@ -27,6 +27,7 @@ int integral = 0;
 const float Kp = 1;  // Proportional constant - You might need to tune this
 const float Ki = 0;  // Integral constant - Start with 0 and tune later if needed
 const float Kd = 1;  // Derivative constant - You might need to tune this
+const float DEADBAND = 0;
 
 void setup_PWM() {
   PORTA.DIRSET = PIN1_bm | PIN2_bm;
@@ -38,7 +39,7 @@ void setup_PWM() {
 
 void setMotor(uint8_t L, uint8_t R) {
   TCA0.SINGLE.CMP1 = L;
-  //TCA0.SINGLE.CMP2 = R;
+  analogWrite(R_MOTOR, R);
 }
 
 void setup() {
@@ -56,10 +57,17 @@ void setup() {
   pinMode(IR_5, INPUT);
   Serial1.begin(57600);
   Serial1.print("Hi\n");
-  //analogWriteFrequency(WRITEFREQ);
+    // Configure PORTMUX for PA1 and PA2
+  PORTMUX_TCAROUTEA = PORTMUX_TCA0_PORTA_gc;
+  
+  // Set the direction of PA1 and PA2 as output
+  PORTA.DIRSET = PIN1_bm | PIN2_bm;
+  
+  // Configure TCA0 for PWM
+  TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV1024_gc | TCA_SINGLE_ENABLE_bm;
+  TCA0.SINGLE.CTRLB = TCA_SINGLE_WGMODE_SINGLESLOPE_gc | TCA_SINGLE_CMP1EN_bm | TCA_SINGLE_CMP2EN_bm;
+  TCA0.SINGLE.PER = 255;
   analogReadResolution(ANALOGRES);
-  //setup_PWM();
-  setMotor(40, 40);
 }
 
 void sensorRead(uint8_t *sensors) {
@@ -68,6 +76,21 @@ void sensorRead(uint8_t *sensors) {
     sensors[2] = analogRead(IR_3);
     sensors[3] = analogRead(IR_4);
     sensors[4] = analogRead(IR_5);
+}
+
+
+int calculatePosition(uint8_t *sensors) {
+    int weightedSum = 0;
+    int total = 0;
+    for (int i = 0; i < 5; i++) {
+        weightedSum += (255 - sensors[i]) * weights[i];  // 255-sensors[i] to consider black as maximum value
+        total += (255 - sensors[i]);
+    }
+
+    int position = weightedSum / total;
+        
+    Serial1.print(position);
+    return position;
 }
 
 void printSensors() {
@@ -90,6 +113,7 @@ int computePID(int error) {
 void driveMotors(int speed, int turnValue) {
     int leftSpeed = constrain(speed + turnValue, 0, 255);
     int rightSpeed = constrain(speed - turnValue, 0, 255);
+    setMotor(leftSpeed, rightSpeed);
     Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
 }
 
@@ -98,17 +122,14 @@ void loop() {
     // printSensors();
     // digitalWrite(LED_2, LOW);
     // delay(500);
-    // sensorRead(sensors);
+    sensorRead(sensors);
+    printSensors();
 
     // Calculate line position error using weighted sum
-    int error = 0;
-    for (int i = 0; i < numSensors; i++) {
-        error += weights[i] * sensors[i];
-    }
-
+    int error = calculatePosition(sensors);    
     int turnValue = computePID(error);
 
-    driveMotors(127, turnValue);  // Assuming 127 as the base speed
+    driveMotors(20, turnValue);  // Assuming 127 as the base speed
 
     digitalWrite(LED_2, HIGH);
     printSensors();
