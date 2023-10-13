@@ -75,4 +75,43 @@ void loop() {
     printSensors();
     digitalWrite(LED_2, LOW);
     delay(500);
+    sensorRead(sensors);
+
+    // Calculate line position error using weighted sum
+    int error = 0;
+    for (int i = 0; i < numSensors; i++) {
+        error += weights[i] * sensors[i];
+    }
+
+    int turnValue = computePID(error);
+
+    driveMotors(127, turnValue);  // Assuming 127 as the base speed
+
+    digitalWrite(LED_2, HIGH);
+    printSensors();
+    digitalWrite(LED_2, LOW);
+    delay(50);  // Reduced delay for quicker response
+}
+const int numSensors = 5;
+const int weights[numSensors] = {-2, -1, 0, 1, 2};
+int lastError = 0;
+int integral = 0;
+
+// PID Constants
+const float Kp = 1;  // Proportional constant - You might need to tune this
+const float Ki = 0;  // Integral constant - Start with 0 and tune later if needed
+const float Kd = 1;  // Derivative constant - You might need to tune this
+
+int computePID(int error) {
+    integral += error;
+    int derivative = error - lastError;
+    int turn = Kp * error + Ki * integral + Kd * derivative;
+    lastError = error;
+    return turn;
+}
+
+void driveMotors(int speed, int turnValue) {
+    int leftSpeed = constrain(speed + turnValue, 0, 255);
+    int rightSpeed = constrain(speed - turnValue, 0, 255);
+    setMotor(leftSpeed, rightSpeed);
 }
