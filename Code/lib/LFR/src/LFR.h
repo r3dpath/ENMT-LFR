@@ -1,10 +1,7 @@
 #ifndef LFR_H
 #define LFR_H
 
-#include <BasicLinearAlgebra.h>
 #include <Arduino.h>
-
-using namespace BLA;
 
 #define L_MOTOR PIN_PA1
 #define R_MOTOR PIN_PA2
@@ -29,6 +26,7 @@ typedef enum {
 void sensorRead(uint8_t*);
 void setMotor(uint8_t, uint8_t);
 float sensorParse(void);
-float sensorMatMul(BLA::Matrix<4>, BLA::Matrix<3, 4>);
+float sensorMatMul(uint8_t*, float*);
+void sensorPrint(uint8_t*);
 
 #endif //LFR_H

@@ -1,10 +1,8 @@
 #include <Arduino.h>
 #include <LFR.h>
-#include <BasicLinearAlgebra.h>
-using namespace BLA;
 
-BLA::Matrix<3, 4> sensorDataU = {0.0025, -0.0025, -0.0025, 0.0025, -0.155, 0.155, 0.135, -0.095, 2.25, -0.75, -1.25, 0.75};
-BLA::Matrix<3, 4> sensorDataL = {0.0025, -0.0025, -0.0025, 0.0025, -0.105, 0.065, 0.085, -0.045, 0.95, 0.15, -0.15, 0.05};
+float sensorDataU[12] = {0.0025, -0.0025, -0.0025, 0.0025, -0.155, 0.155, 0.135, -0.095, 2.25, -0.75, -1.25, 0.75};
+float sensorDataL[12] = {0.0025, -0.0025, -0.0025, 0.0025, -0.105, 0.065, 0.085, -0.045, 0.95, 0.15, -0.15, 0.05};
 
 static uint8_t sensorlast = 0;
 
@@ -24,26 +22,33 @@ void sensorRead(uint8_t *sensors) {
 float sensorParse(void) {
     uint8_t sensors[5] = {0, 0, 0, 0, 0};
     sensorRead(sensors);
+    sensorPrint(sensors);
     for (uint8_t i = 0; i < 5; i++) {
         if (sensors[i] < SENSOR_THRESHOLD) {
+            digitalWrite(LED_1, HIGH);
             if (i<2) {
                 sensorlast = 0;
-                BLA::Matrix<4> mat = {sensors[0], sensors[1], sensors[2], sensors[3]};
-                return sensorMatMul(mat, sensorDataL);
+                return sensorMatMul(sensors, sensorDataL);
             }
             else {
                 sensorlast = 40;
-                BLA::Matrix<4> mat = {sensors[1], sensors[2], sensors[3], sensors[4]};
-                return sensorMatMul(mat, sensorDataU);
+                return sensorMatMul(sensors+1, sensorDataU);
             }
-        } else {
-            return sensorlast;
-        }
+        } 
     }
-
+    return sensorlast;
 }
 
-float sensorMatMul(BLA::Matrix<4> sensors, BLA::Matrix<3, 4> mult) {
-    BLA::Matrix<3> R = mult * sensors;
-    return -R(1)/(2*R(0));
+void sensorPrint(uint8_t *sensors) {
+  for (int i = 0; i < 5; i++) {
+    Serial1.print(sensors[i]);
+    Serial1.print(" ");
+  }
+  Serial1.println();
+}
+
+float sensorMatMul(uint8_t* sen, float* mult) {
+    float R_1 = sen[0]*mult[0]+sen[1]*mult[1]+sen[2]*mult[2]+sen[3]*mult[3];
+    float R_2 = sen[4]*mult[0]+sen[5]*mult[1]+sen[6]*mult[2]+sen[7]*mult[3];
+    return -R_2/(2*R_1);
 }

@@ -30,24 +30,10 @@ void setup() {
   analogReadResolution(ANALOGRES);
 }
 
-void printSensors() {
-  sensorRead(sensors);
-  for (int i = 0; i < 5; i++) {
-    Serial1.print(sensors[i]);
-    Serial1.print(" ");
-  }
-  Serial1.println();
-}
-
 void loop() {
   while (1) {
-    Serial1.print("Hi\n");
-    digitalWrite(LED_1, HIGH);
-    // printSensors();
-    digitalWrite(LED_1, LOW); //Turn off LED
-    delay(1000);
-    digitalWrite(LED_1, HIGH); //Turn off LED
-    delay(1000);
+    Serial1.println(sensorParse());
+    delay(500);
   }
 }
 
