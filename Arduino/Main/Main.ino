@@ -18,14 +18,15 @@
 
 uint8_t sensors[5] = {0, 0, 0, 0, 0};
 const int numSensors = 5;
-const float weights[numSensors] = {-0.8, -0.5, 0, 0.5, 0.8};
+const float weights[numSensors] = {-0.6, -0.2, 0, 0.2, 0.6};
 int lastError = 0;
 int integral = 0;
-
+//int lastTurnDirection = 0;
 // PID Constants
-const float Kp = 20;  // Proportional constant - You might need to tune this
-const float Ki = 0;  // Integral constant - Start with 0 and tune later if needed
-const float Kd = 0;  // Derivative constant - You might need to tune this
+const float Kp = 10;  // Proportional constant - You might need to tune this
+const float Ki = 0.01;  // Integral constant - Start with 0 and tune later if needed
+const float Kd = 0.3;  // Derivative constant - You might need to tune this
+int baseSpeed = 10;
 //const float DEADBAND = 0.2;
 
 void setup_PWM() {
@@ -82,8 +83,8 @@ float calculatePosition(uint8_t *sensors) {
     int weightedSum = 0;
     int total = 0;
     for (int i = 0; i < 5; i++) {
-        weightedSum += (255 - sensors[i]) * weights[i];  // 255-sensors[i] to consider black as maximum value
-        total += (255 - sensors[i]);
+        weightedSum += (235 - sensors[i]) * weights[i];  // 255-sensors[i] to consider black as maximum value
+        total += (235 - sensors[i]);
     }
     float position = (float)weightedSum / total;
         
@@ -109,8 +110,8 @@ int computePID(float error) {
 }
 
 void driveMotors(int speed, int turnValue) {
-    int leftSpeed = constrain(speed + turnValue, 0, 35);
-    int rightSpeed = constrain(speed - turnValue, 0, 35);
+    int leftSpeed = constrain(speed + turnValue, 0, 13);
+    int rightSpeed = constrain(speed - turnValue, 0, 13);
     setMotor(rightSpeed, leftSpeed);
     Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
 }
@@ -125,13 +126,15 @@ void loop() {
 
     // Calculate line position error using weighted sum
     float error = calculatePosition(sensors);    
-    int turnValue = computePID(error);
+    int turnValue = computePID(error);  
 
-    driveMotors(17, turnValue);  // Assuming 127 as the base speed
+
+
+    driveMotors(baseSpeed, turnValue);  // Assuming 127 as the base speed
 
     digitalWrite(LED_2, HIGH);
     printSensors();
     digitalWrite(LED_2, LOW);
-    delay(50);  // Reduced delay for quicker response
+    delay(10);  // Reduced delay for quicker response
 }
 
