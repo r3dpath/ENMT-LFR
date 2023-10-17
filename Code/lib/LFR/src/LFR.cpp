@@ -13,9 +13,10 @@ static int16_t lastError = 0;
 
 static void sensorRead(uint8_t*);
 static uint8_t curveFit(uint8_t, uint8_t);
-static uint8_t PID(int8_t);
+static int8_t PID(int8_t);
 
 void setup_PWM(void) {
+    PORTMUX_TCAROUTEA = PORTMUX_TCA0_PORTA_gc;
     PORTA.DIRSET = PIN1_bm | PIN2_bm;
     TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | TCA_SINGLE_ENABLE_bm;
     TCA0.SINGLE.CTRLB = TCA_SINGLE_WGMODE_SINGLESLOPE_gc | TCA_SINGLE_CMP1EN_bm;
@@ -25,11 +26,12 @@ void setup_PWM(void) {
 void motorUpdate(void) {
     uint8_t pos = sensorParse();
     int8_t error = 40-pos;
-    uint8_t turn = PID(error);
-    uint8_t leftSpeed = constrain(baseSpeed + turn, 0, 30);
-    uint8_t rightSpeed = constrain(baseSpeed + turn, 0, 30);
+    int8_t turn = PID(error);
+    uint8_t leftSpeed = constrain(baseSpeed - turn, 0, maxSpeed);
+    uint8_t rightSpeed = constrain(baseSpeed + turn, 0, maxSpeed);
     setMotor(leftSpeed, rightSpeed);
-    Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
+
+    //Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
 }
 
 void setMotor(uint8_t speedL, uint8_t speedR) {
@@ -48,7 +50,7 @@ void sensorPrint(uint8_t *sensors) {
 uint8_t sensorParse(void) {
     uint8_t sensors[5] = {0, 0, 0, 0, 0};
     sensorRead(sensors);
-    sensorPrint(sensors);
+    //sensorPrint(sensors);
     uint8_t minindex = 0;
     for (uint8_t i = 1; i<5; i++) {
         if (sensors[i] < sensors[minindex]) {
@@ -100,10 +102,10 @@ static uint8_t curveFit(uint8_t x1, uint8_t x2) {
     return (loc/5)+10;
 }
 
-static uint8_t PID(int8_t error) {
-    integral += error;
-    int derivative = error - lastError;
-    int turn = Kp * error + Ki * integral + Kd * derivative;
+static int8_t PID(int8_t error) {
+    //integral += error;
+    int8_t derivative = error - lastError;
+    int8_t turn = Kp * error + Kd * derivative;
     lastError = error;
     return turn;
 }
