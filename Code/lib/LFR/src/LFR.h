@@ -16,7 +16,8 @@
 #define IR_4 PIN_PD3 
 #define IR_5 PIN_PD4
 
-#define SENSOR_THRESHOLD 50
+#define SENSOR_MIN_THRESHOLD 150
+#define SENSOR_SIDE_THRESHOLD 180
 
 typedef enum {
     LEFTMOTOR,
@@ -26,7 +27,7 @@ typedef enum {
 void sensorRead(uint8_t*);
 void setMotor(uint8_t, uint8_t);
 float sensorParse(void);
-float sensorMatMul(uint8_t*, float*);
 void sensorPrint(uint8_t*);
+float curveFit(uint8_t, uint8_t);
 
 #endif //LFR_H
