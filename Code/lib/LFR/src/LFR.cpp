@@ -24,11 +24,21 @@ void setup_PWM(void) {
 }
 
 void motorUpdate(void) {
-    uint8_t pos = sensorParse();
+    uint8_t sensors[5] = {0, 0, 0, 0, 0};
+    sensorRead(sensors);
+    uint8_t pos = sensorParse(sensors);
+    uint8_t leftSpeed;
+    uint8_t rightSpeed;
     int8_t error = 40-pos;
     int8_t turn = PID(error);
-    uint8_t leftSpeed = constrain(baseSpeed - turn, 0, maxSpeed);
-    uint8_t rightSpeed = constrain(baseSpeed + turn, 0, maxSpeed);
+    if (sensors[2] < SENSOR_MIN_THRESHOLD) {
+        leftSpeed = constrain((baseSpeed + 20) - turn, 0, (maxSpeed + 25));
+        rightSpeed = constrain((baseSpeed + 20) + turn, 0, (maxSpeed + 25));
+    } else {
+        leftSpeed = constrain(baseSpeed - turn, 0, maxSpeed);
+        rightSpeed = constrain(baseSpeed + turn, 0, maxSpeed);
+    }
+
     setMotor(leftSpeed, rightSpeed);
 
     //Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
@@ -47,9 +57,7 @@ void sensorPrint(uint8_t *sensors) {
   Serial1.println();
 }
 
-uint8_t sensorParse(void) {
-    uint8_t sensors[5] = {0, 0, 0, 0, 0};
-    sensorRead(sensors);
+uint8_t sensorParse(uint8_t *sensors) {
     //sensorPrint(sensors);
     uint8_t minindex = 0;
     for (uint8_t i = 1; i<5; i++) {

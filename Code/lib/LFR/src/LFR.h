@@ -19,11 +19,11 @@
 #define SENSOR_MIN_THRESHOLD 150
 #define SENSOR_SIDE_THRESHOLD 180
 
-#define Kp 1  // Proportional constant - You might need to tune this
+#define Kp 0.8  // Proportional constant - You might need to tune this
 #define Ki 0  // Integral constant - Start with 0 and tune later if needed
-#define Kd 3  // Derivative constant - You might need to tune this
+#define Kd 5  // Derivative constant - You might need to tune this
 
-#define baseSpeed 50
+#define baseSpeed 40
 #define maxSpeed 55
 
 
@@ -39,10 +39,23 @@ void setup_PWM(void);
 void motorUpdate(void);
 void setMotor(uint8_t, uint8_t);
 void sensorPrint(uint8_t*);
-uint8_t sensorParse(void);
+uint8_t sensorParse(uint8_t*);
 
 
 #endif //LFR_H
 
 //base = 40, Kp = 0.8, Ki = 0, Kd = 0.02
 //
+
+//---
+// 11 sec w rubber bands
+
+// #define baseSpeed 75
+// #define maxSpeed 75
+
+// #define Kp 1.2  // Proportional constant - You might need to tune this
+// #define Ki 0  // Integral constant - Start with 0 and tune later if needed
+// #define Kd 1  // Derivative constant - You might need to tune this
+
+//w base + 30, max + 25
+//---
