@@ -1,28 +1,51 @@
 #include <Arduino.h>
 #include <LFR.h>
 
-static uint8_t CURVE[61] = {179, 178, 178, 177, 177, 176, 175, 175, 174, 173, 172, 171, 170, 169,
+const uint8_t CURVE[61] = {179, 178, 178, 177, 177, 176, 175, 175, 174, 173, 172, 171, 170, 169,
                             168, 167, 165, 163, 161, 159, 156, 154, 150, 146, 142, 137, 131, 125,
                             118, 110, 102,  94,  86,  79,  73,  67,  62,  58,  54,  50,  48,  45,
                             43,  41,  39,  37,  36,  35,  34,  33,  32,  31,  30,  29,  29,  28,
                             27,  27,  26,  26,  25};
 
 static uint8_t sensorlast = 0;
+static int16_t integral = 0;
+static int16_t lastError = 0;
+
+static void sensorRead(uint8_t*);
+static uint8_t curveFit(uint8_t, uint8_t);
+static uint8_t PID(int8_t);
+
+void setup_PWM(void) {
+    PORTA.DIRSET = PIN1_bm | PIN2_bm;
+    TCA0.SINGLE.CTRLA = TCA_SINGLE_CLKSEL_DIV1_gc | TCA_SINGLE_ENABLE_bm;
+    TCA0.SINGLE.CTRLB = TCA_SINGLE_WGMODE_SINGLESLOPE_gc | TCA_SINGLE_CMP1EN_bm;
+    TCA0.SINGLE.PER = 255;
+}
+
+void motorUpdate(void) {
+    uint8_t pos = sensorParse();
+    int8_t error = 40-pos;
+    uint8_t turn = PID(error);
+    uint8_t leftSpeed = constrain(baseSpeed + turn, 0, 30);
+    uint8_t rightSpeed = constrain(baseSpeed + turn, 0, 30);
+    setMotor(leftSpeed, rightSpeed);
+    Serial1.print(String(leftSpeed) + " " + String(rightSpeed) + "\n");
+}
 
 void setMotor(uint8_t speedL, uint8_t speedR) {
-    analogWrite(L_MOTOR, speedL);
+    TCA0.SINGLE.CMP1 = speedL;
     analogWrite(R_MOTOR, speedR);
 }
 
-void sensorRead(uint8_t *sensors) {
-    sensors[4] = analogRead(IR_1);
-    sensors[3] = analogRead(IR_2);
-    sensors[2] = analogRead(IR_3);
-    sensors[1] = analogRead(IR_4);
-    sensors[0] = analogRead(IR_5);
+void sensorPrint(uint8_t *sensors) {
+  for (int i = 0; i < 5; i++) {
+    Serial1.print(sensors[i]);
+    Serial1.print(" ");
+  }
+  Serial1.println();
 }
 
-float sensorParse(void) {
+uint8_t sensorParse(void) {
     uint8_t sensors[5] = {0, 0, 0, 0, 0};
     sensorRead(sensors);
     sensorPrint(sensors);
@@ -37,7 +60,7 @@ float sensorParse(void) {
             sensorlast = 0;
             return sensorlast;
         } else if (minindex == 4) {
-            sensorlast = 120;
+            sensorlast = 80;
             return sensorlast;
         } else if (sensors[minindex-1] < SENSOR_SIDE_THRESHOLD) {
             sensorlast = (20*minindex-(20-curveFit(sensors[minindex-1], sensors[minindex])));
@@ -54,15 +77,15 @@ float sensorParse(void) {
     }
 }
 
-void sensorPrint(uint8_t *sensors) {
-  for (int i = 0; i < 5; i++) {
-    Serial1.print(sensors[i]);
-    Serial1.print(" ");
-  }
-  Serial1.println();
+static void sensorRead(uint8_t *sensors) {
+    sensors[4] = analogRead(IR_1);
+    sensors[3] = analogRead(IR_2);
+    sensors[2] = analogRead(IR_3);
+    sensors[1] = analogRead(IR_4);
+    sensors[0] = analogRead(IR_5);
 }
 
-float curveFit(uint8_t x1, uint8_t x2) {
+static uint8_t curveFit(uint8_t x1, uint8_t x2) {
     uint16_t lstsqrs=65000;
     uint8_t loc = 0;
 
@@ -75,4 +98,12 @@ float curveFit(uint8_t x1, uint8_t x2) {
     }
 
     return (loc/5)+10;
+}
+
+static uint8_t PID(int8_t error) {
+    integral += error;
+    int derivative = error - lastError;
+    int turn = Kp * error + Ki * integral + Kd * derivative;
+    lastError = error;
+    return turn;
 }

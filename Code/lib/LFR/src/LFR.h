@@ -19,15 +19,21 @@
 #define SENSOR_MIN_THRESHOLD 150
 #define SENSOR_SIDE_THRESHOLD 180
 
+#define Kp 10  // Proportional constant - You might need to tune this
+#define Ki 0  // Integral constant - Start with 0 and tune later if needed
+#define Kd 0.3  // Derivative constant - You might need to tune this
+#define baseSpeed 10
+
 typedef enum {
     LEFTMOTOR,
     RIGHTMOTOR
 } motor_t;
 
-void sensorRead(uint8_t*);
+void setup_PWM(void);
+void motorUpdate(void);
 void setMotor(uint8_t, uint8_t);
-float sensorParse(void);
 void sensorPrint(uint8_t*);
-float curveFit(uint8_t, uint8_t);
+uint8_t sensorParse(void);
+
 
 #endif //LFR_H
