@@ -16,16 +16,16 @@
 #define IR_4 PIN_PD3 
 #define IR_5 PIN_PD4
 
-#define SENSOR_MIN_THRESHOLD 150
+#define SENSOR_MIN_THRESHOLD 170
 #define SENSOR_SIDE_THRESHOLD 180
 
-#define Kp 0.8  // Proportional constant - You might need to tune this
-#define Ki 0  // Integral constant - Start with 0 and tune later if needed
-#define Kd 5  // Derivative constant - You might need to tune this
+#define Kp 1.2  // Proportional constant - You might need to tune this
+#define Ki 0.001  // Integral constant - Start with 0 and tune later if needed
+#define Kd 10  // Derivative constant - You might need to tune this
 
-#define baseSpeed 40
-#define maxSpeed 55
-
+#define baseSpeed 60
+#define maxSpeed 65
+#define boostSpeed 10
 
 
 
@@ -59,3 +59,14 @@ uint8_t sensorParse(uint8_t*);
 
 //w base + 30, max + 25
 //---
+
+/*
+Solid 12s run with wire slowdown
+#define Kp 1.2  // Proportional constant - You might need to tune this
+#define Ki 0.001  // Integral constant - Start with 0 and tune later if needed
+#define Kd 10  // Derivative constant - You might need to tune this
+
+#define baseSpeed 60
+#define maxSpeed 65
+#define boostSpeed 0
+*/
