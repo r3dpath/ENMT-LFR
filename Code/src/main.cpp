@@ -25,6 +25,6 @@ void setup() {
 
 void loop() {
   motorUpdate();
-  //setMotor(50, 50);
+  //setMotor(100, 0);
 }
 
