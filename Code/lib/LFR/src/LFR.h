@@ -19,16 +19,17 @@
 #define SENSOR_MIN_THRESHOLD 170
 #define SENSOR_SIDE_THRESHOLD 180
 
-#define Kp 1.2  // Proportional constant - You might need to tune this
-#define Ki 0.001  // Integral constant - Start with 0 and tune later if needed
-#define Kd 10  // Derivative constant - You might need to tune this
+// #define SENSOR_MIN_THRESHOLD 50
+// #define SENSOR_SIDE_THRESHOLD 0
 
-#define baseSpeed 60
-#define maxSpeed 65
-#define boostSpeed 10
+#define Kp 1  // Proportional constant - You might need to tune this
+#define Ki 0  // Integral constant - Start with 0 and tune later if needed
+#define Kd 2  // Derivative constant - You might need to tune this
 
-
-
+#define BaseSpeed 60
+#define MaxSpeed 60
+#define BoostSpeed 10
+#define LBias 1.1
 
 typedef enum {
     LEFTMOTOR,

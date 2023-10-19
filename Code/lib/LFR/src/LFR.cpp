@@ -17,6 +17,10 @@ static int8_t PID(int8_t);
 
 static uint8_t derivative = 0;
 
+static uint8_t baseSpeed = BaseSpeed;
+static uint8_t maxSpeed = MaxSpeed;
+static uint8_t boostSpeed = BoostSpeed;
+
 void setup_PWM(void) {
     PORTMUX_TCAROUTEA = PORTMUX_TCA0_PORTA_gc;
     PORTA.DIRSET = PIN1_bm | PIN2_bm;
@@ -26,10 +30,19 @@ void setup_PWM(void) {
 }
 
 void motorUpdate(void) {
+
+    if (millis() > 5000) {
+        baseSpeed = BaseSpeed - 10;
+        maxSpeed = MaxSpeed - 10;
+    }
+    if (millis() > 9000) {
+        boostSpeed = 0;
+    }
+
     uint8_t sensors[5] = {0, 0, 0, 0, 0};
     sensorRead(sensors);
     uint8_t pos = sensorParse(sensors);
-    //Serial1.println(pos);
+    Serial1.println(pos);
     uint8_t leftSpeed;
     uint8_t rightSpeed;
     int8_t error = 50-pos;
@@ -48,7 +61,7 @@ void motorUpdate(void) {
 }
 
 void setMotor(uint8_t speedL, uint8_t speedR) {
-    TCA0.SINGLE.CMP1 = speedL;
+    TCA0.SINGLE.CMP1 = speedL * LBias;
     analogWrite(R_MOTOR, speedR);
 }
 
@@ -61,7 +74,7 @@ void sensorPrint(uint8_t *sensors) {
 }
 
 uint8_t sensorParse(uint8_t *sensors) {
-    //sensorPrint(sensors);
+    sensorPrint(sensors);
     uint8_t minindex = 0;
     static uint8_t lastRead = 50;
     for (uint8_t i = 1; i<5; i++) {
@@ -72,6 +85,9 @@ uint8_t sensorParse(uint8_t *sensors) {
     derivative = abs(lastRead-sensors[minindex]);
     lastRead = sensors[minindex];
     if (sensors[minindex] < SENSOR_MIN_THRESHOLD) {
+        if ((sensorlast == 0 && minindex > 2) || (sensorlast == 100 && minindex < 2)) {
+            return sensorlast;
+        }
         if (minindex != 0) {
             if (sensors[minindex-1] < SENSOR_SIDE_THRESHOLD) {
                 sensorlast = (10+(20*minindex)-(20-curveFit(sensors[minindex-1], sensors[minindex])));
@@ -91,9 +107,12 @@ uint8_t sensorParse(uint8_t *sensors) {
 
     } else {
         if (sensorlast == 10) {
-            return 0;
+            sensorlast = 0;
+            
+            return sensorlast;
         } else if (sensorlast == 90) {
-            return 100;
+            sensorlast = 100;
+            return sensorlast;
         }
         
         return sensorlast;
@@ -126,11 +145,12 @@ static uint8_t curveFit(uint8_t x1, uint8_t x2) {
 
 static int8_t PID(int8_t error) {
     integral += error/20;
-    Serial1.println(integral*Ki);
+    //Serial1.println(integral*Ki);
     if(error == 0) {
         integral = 0;
     }
-    int8_t turn = Kp * error + integral*Ki;
+    int8_t turn = constrain(Kp * error + integral*Ki, -127, 128);
+    //Serial1.println(derivative);
     if (turn > 0) {
         turn -= Kd * derivative;
         if (turn < 0) {

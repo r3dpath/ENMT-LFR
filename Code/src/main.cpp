@@ -21,10 +21,17 @@ void setup() {
   analogWriteFrequency(WRITEFREQ);
   analogReadResolution(ANALOGRES);
   setup_PWM();
+  setMotor(0, 0);
+  while (millis() < 1000) {
+    continue;
+  }
 }
 
 void loop() {
   motorUpdate();
-  //setMotor(100, 0);
+  // setMotor(70, 70);
+  // delay(1000);
+  // setMotor(0, 0);
+  // delay(10000);
 }
 
