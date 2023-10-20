@@ -24,11 +24,11 @@
 
 #define Kp 0.7  // Proportional constant - You might need to tune this
 #define Ki 0  // Integral constant - Start with 0 and tune later if needed
-#define Kd 6  // Derivative constant - You might need to tune this
+#define Kd 5  // Derivative constant - You might need to tune this
 
-#define BaseSpeed 75
-#define MaxSpeed 75
-#define BoostSpeed 0
+#define BaseSpeed 65
+#define MaxSpeed 65
+#define BoostSpeed 8
 #define LBias 1.1
 
 typedef enum {

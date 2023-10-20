@@ -26,7 +26,7 @@
 #define Ki 0  // Integral constant - Start with 0 and tune later if needed
 #define Kd 6  // Derivative constant - You might need to tune this
 
-#define BaseSpeed 75
+#define BaseSpeed 72
 #define MaxSpeed 75
 #define BoostSpeed 0
 #define LBias 1.1

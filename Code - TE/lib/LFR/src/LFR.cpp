@@ -30,55 +30,11 @@ void setup_PWM(void) {
 }
 
 void motorUpdate(void) {
-    if (millis() < 1800) {
-        digitalWriteFast(LED_1, HIGH);
-        baseSpeed = BaseSpeed;
-        maxSpeed = MaxSpeed;
-    } else if (millis() < 2400) {
-        digitalWriteFast(LED_1, LOW);
-        baseSpeed = BaseSpeed - 14;
-        maxSpeed = MaxSpeed - 14;
-        boostSpeed = 0;
-    } else if (millis() < 7400) {
-        digitalWriteFast(LED_1, HIGH);
-        baseSpeed = BaseSpeed - 18;
-        maxSpeed = MaxSpeed - 18;
+    if (millis() > 2600) {
+        baseSpeed = BaseSpeed - 10;
+        maxSpeed = MaxSpeed - 10;
         boostSpeed = 0;
     }
-
-
-    // if (millis() < 1700) {
-    //     digitalWriteFast(LED_1, HIGH);
-    //     baseSpeed = BaseSpeed + 4;
-    //     maxSpeed = MaxSpeed + 4;
-    // }
-    // else if (millis() < 1800) {
-    //     digitalWriteFast(LED_1, HIGH);
-    //     baseSpeed = BaseSpeed - 18;
-    //     maxSpeed = MaxSpeed - 18;
-    // else if (millis() < 1800) {
-    //     digitalWriteFast(LED_1, HIGH);
-    //     baseSpeed = BaseSpeed - 12;
-    //     maxSpeed = MaxSpeed - 12;
-
-    // } else if (millis() < 2400) {
-    //     digitalWriteFast(LED_1, LOW);
-    //     baseSpeed = BaseSpeed - 14;
-    //     maxSpeed = MaxSpeed - 14;
-    //     boostSpeed = 0;
-    // }
-    // } else if (millis() < 2600) {
-    //     digitalWriteFast(LED_1, HIGH);
-    //     baseSpeed = BaseSpeed;
-    //     maxSpeed = MaxSpeed;
-    // } else if (millis() < 3200) {
-    //     digitalWriteFast(LED_1, HIGH);
-    //     baseSpeed = BaseSpeed - 18;
-    //     maxSpeed = MaxSpeed - 18;
-    // } else if (millis() < 5000) {
-    //     digitalWriteFast(LED_1, LOW);
-    // }
-
     // if (millis() > 4000) {
     //     boostSpeed = 0;
     // }
